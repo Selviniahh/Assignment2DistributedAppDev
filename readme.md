@@ -25,8 +25,7 @@ language	"Turkish"
 http://localhost:3000/api/timesOfDay
 ```
 ### Output you should get
-```json
-	
+```angular2html
 message	"success"
 data	
 0	
@@ -38,10 +37,10 @@ timeOfDay	"Morning"
 ```
 
 # Test Greet
-```json
+```
 curl -X POST http://localhost:3000/api/greet -H "Content-Type: application/json" -d '{"timeOfDay": "Evening", "language": "English", "tone": "Formal"}'
 ```
 ### Output you should get:
-```json
+```
 {"greetingMessage":"Good evening"}
 ```
