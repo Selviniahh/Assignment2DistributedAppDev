@@ -8,7 +8,6 @@ const PORT = 3000;
 
 app.use(express.json());
 
-// Initialize and seed the SQLite database
 let db;
 (async () => {
     try {
@@ -17,7 +16,6 @@ let db;
             driver: sqlite3.Database,
         });
 
-        // Create the 'greetings' table if it doesn't exist
         await db.exec(`
             CREATE TABLE IF NOT EXISTS greetings (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,7 +26,6 @@ let db;
             )
         `);
 
-        // Seed the database with some greetings in3 different languages
         await seedDatabase();
         console.log('Database initialized and seeded.');
     } catch (error) {
@@ -36,7 +33,6 @@ let db;
     }
 })();
 
-// Function to seed the database
 async function seedDatabase() {
     const greetings = [
         // English Greetings
@@ -67,7 +63,6 @@ async function seedDatabase() {
     const insertQuery = 'INSERT INTO greetings (timeOfDay, language, greetingMessage, tone) VALUES (?, ?, ?, ?)';
 
     for (const greeting of greetings) {
-        // Check if the greeting already exists to avoid duplicates
         const existing = await db.get(
             'SELECT id FROM greetings WHERE timeOfDay = ? AND language = ? AND greetingMessage = ? AND tone = ?',
             [greeting.timeOfDay, greeting.language, greeting.greetingMessage, greeting.tone]
@@ -79,7 +74,6 @@ async function seedDatabase() {
     }
 }
 
-// Greet endpoint
 app.post('/api/greet', async (req, res) => {
     const { timeOfDay, language, tone } = req.body;
 
@@ -103,7 +97,6 @@ app.post('/api/greet', async (req, res) => {
     }
 });
 
-// Get all times of day
 app.get('/api/timesOfDay', async (req, res) => {
     try {
         const times = await db.all(`SELECT DISTINCT timeOfDay FROM greetings`);
@@ -113,7 +106,6 @@ app.get('/api/timesOfDay', async (req, res) => {
     }
 });
 
-// Get all supported languages
 app.get('/api/languages', async (req, res) => {
     try {
         const languages = await db.all(`SELECT DISTINCT language FROM greetings`);
